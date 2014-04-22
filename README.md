@@ -20,6 +20,7 @@ call was made. The preprocessor will attempt to pull values out of the params an
 merge them into the URL:
 
 ```js
+// URL is interpolated to be, /api/friends/4
 httpi({
 	method: "get",
 	url: "/api/friends/:id",
@@ -27,8 +28,6 @@ httpi({
 		id: 4
 	}
 });
-
-// URL is interpolated to be, /api/friends/4
 ```
 
 Note that the configuration object being passed to the httpi() service is being passed-through to the
@@ -40,18 +39,27 @@ provides VERB-oriented methods that proxy the $http service:
 ```js
 var resource = httpi.resource( "api/friends/:id" );
 
+// URL and method are automatically injected.
 resource.get({
 	params: {
 		id: 4
 	}
 });
 
+// URL and method are automatically injected.
 resource.post({
 	data: {
 		id: 4,
 		name: "Tricia",
 		status: "Best Friend"
 	}
+});
+
+// URL, method, and JSON_CALLBACK handle are automatically injected.
+resource.jsonp({
+	params: {
+		id: 4
+	}	
 });
 ```
 
