@@ -21,7 +21,7 @@ merge them into the URL:
 
 ```js
 // URL is interpolated to be, /api/friends/4
-httpi({
+var promise = httpi({
 	method: "get",
 	url: "/api/friends/:id",
 	params: {
@@ -40,14 +40,14 @@ provides VERB-oriented methods that proxy the $http service:
 var resource = httpi.resource( "api/friends/:id" );
 
 // URL and method are automatically injected.
-resource.get({
+var promise = resource.get({
 	params: {
 		id: 4
 	}
 });
 
 // URL and method are automatically injected.
-resource.post({
+var promise = resource.post({
 	data: {
 		id: 4,
 		name: "Tricia",
@@ -56,7 +56,7 @@ resource.post({
 });
 
 // URL, method, and JSON_CALLBACK handle are automatically injected.
-resource.jsonp({
+var promise = resource.jsonp({
 	params: {
 		id: 4
 	}	
