@@ -37,39 +37,39 @@
 			"DemoController",
 			function( $scope, httpi ) {
 
-				console.warn( "None of the API enpoints exist - they will all throw 404." );
+				console.warn( "None of the API endpoints exist - they will all throw 404." );
 
 				// NOTE: The (.|.) notation will be stripped out automatically; it's only
-				// here to improve readability of the "happy paths" for labels. The 
-				// following urls are pre-processed to be identical:
+				// here to improve readability of the "happy paths" for the interpolation
+				// labels. The following urls are pre-processed to be identical:
 				// --
 				// api/friends/( :listCommand | :id/:itemCommand )
 				// api/friends/:listCommand:id/:itemCommand
 				var resource = httpi.resource( "api/friends/( :listCommand | :id/:itemCommand )" );
 
 				// Clear list of friends - matching listCommand.
-				resource.post({
+				var promise = resource.post({
 					data: {
 						listCommand: "reset"
 					}
 				});
 
 				// Create a new friend - no matching URL parameters.
-				resource.post({
+				var promise = resource.post({
 					data: {
 						name: "Tricia"
 					}
 				});
 
 				// Get a given friend - ID matching.
-				resource.get({
+				var promise = resource.get({
 					data: {
 						id: 4
 					}
 				});
 
 				// Make best friend - ID, itemCommand matching.
-				resource.post({
+				var promise = resource.post({
 					data: {
 						id: 4,
 						itemCommand: "make-best-friend"
@@ -77,7 +77,7 @@
 				});
 
 				// Get gets friends - no matching URL parameters.
-				resource.get({
+				var promise = resource.get({
 					params: {
 						limit: "besties"
 					}
@@ -87,7 +87,7 @@
 				// --
 				// NOTE: The "resource" will auto-inject the "JSON_CALLBACK" marker that
 				// AngularJS will automatically replace with an internal callback name.
-				resource.jsonp({
+				var promise = resource.jsonp({
 					data: {
 						id: 43
 					}
