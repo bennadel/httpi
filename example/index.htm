@@ -1,0 +1,102 @@
+<!doctype html>
+<html ng-app="Demo">
+<head>
+	<meta charset="utf-8" />
+	
+	<title>
+		Using The httpi Service To Make AJAX Requests In AngularJS
+	</title>
+
+</head>
+<body ng-controller="DemoController">
+
+	<h1>
+		Using The httpi Service To Make AJAX Requests In AngularJS
+	</h1>
+
+	<p>
+		<em>View the browser console - where all the action is taking place.</em>
+	</p>
+
+
+	<!-- Initialize scripts. -->
+	<script type="text/javascript" src="vendor/angular-1.2.16.min.js"></script>
+	<script type="text/javascript" src="../lib/httpi.js"></script>
+	<script type="text/javascript">
+
+		// Define the module for our AngularJS application.
+		var app = angular.module( "Demo", [ "httpi" ] );
+
+		
+		// -------------------------------------------------- //
+		// -------------------------------------------------- //
+
+
+		// I control the main demo.
+		app.controller(
+			"DemoController",
+			function( $scope, httpi ) {
+
+				console.warn( "None of the API enpoints exist - they will all throw 404." );
+
+				// NOTE: The (.|.) notation will be stripped out automatically; it's only
+				// here to improve readability of the "happy paths" for labels. The 
+				// following urls are pre-processed to be identical:
+				// --
+				// api/friends/( :listCommand | :id/:itemCommand )
+				// api/friends/:listCommand:id/:itemCommand
+				var resource = httpi.resource( "api/friends/( :listCommand | :id/:itemCommand )" );
+
+				// Clear list of friends - matching listCommand.
+				resource.post({
+					data: {
+						listCommand: "reset"
+					}
+				});
+
+				// Create a new friend - no matching URL parameters.
+				resource.post({
+					data: {
+						name: "Tricia"
+					}
+				});
+
+				// Get a given friend - ID matching.
+				resource.get({
+					data: {
+						id: 4
+					}
+				});
+
+				// Make best friend - ID, itemCommand matching.
+				resource.post({
+					data: {
+						id: 4,
+						itemCommand: "make-best-friend"
+					}
+				});
+
+				// Get gets friends - no matching URL parameters.
+				resource.get({
+					params: {
+						limit: "besties"
+					}
+				});
+
+				// Get a friend as a JSONP request.
+				// --
+				// NOTE: The "resource" will auto-inject the "JSON_CALLBACK" marker that
+				// AngularJS will automatically replace with an internal callback name.
+				resource.jsonp({
+					data: {
+						id: 43
+					}
+				});
+
+			}
+		);
+
+	</script>
+
+</body>
+</html>
