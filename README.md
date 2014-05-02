@@ -70,6 +70,28 @@ $resource module.
 
 _**Note**: This is clearly based on my own usage patterns; your mileage may vary._
 
+## Aborting Requests
+
+As of __AngularJS 1.2__ (or 1.1.5 unstable), you can now pass in a promise in the "timeout" property. 
+If the promise is resolved, AngularJS will abort the underlying AJAX request. httpi will attempt to 
+inject a .abort() in the request object if the .timeout property is not already in use:
+
+```js
+// Initiate an AJAX request.
+var promise = httpi({
+	method: "get",
+	url: "/api/friends/:id",
+	params: {
+		id: 4
+	}
+});
+
+// Abort the request.
+promise.abort();
+```
+
+If the .timeout property was already in use, the .abort() method still exists, but it's a no-op method.
+
 
 [1]: http://www.bennadel.com
 [2]: https://plus.google.com/108976367067760160494?rel=author
