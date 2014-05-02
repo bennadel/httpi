@@ -93,6 +93,27 @@
 					}
 				});
 
+				// Try to abort a request - notice that the request prmise has an 
+				// .abort() method.
+				var promise = resource.get({
+					params: {
+						id: 4
+					}
+				});
+
+				promise.abort();
+
+				// Try to abort a request that is already using the .timeout config.
+				var promise = resource.get({
+					params: {
+						id: 4
+					},
+					timeout: 2000
+				});
+
+				// NOTE: This won't work - see console.warn() output.
+				promise.abort();
+
 			}
 		);
 
