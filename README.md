@@ -92,6 +92,37 @@ promise.abort();
 
 If the .timeout property was already in use, the .abort() method still exists, but it's a no-op method.
 
+## Keeping Trailing Slashes In Interpolated URLs
+
+By default, the trailing slash will be stripped out of the interpolated URL. However, some APIs require
+resource requests to contian the trailing slash. If this is the case, you can add a `keepTrailingSlash`
+parameter to the httpi() configuration:
+
+```js
+// URL is interpolated to be, /api/friends/4/
+var promise = httpi({
+	method: "get",
+	url: "/api/friends/:id/",
+	params: {
+		id: 4
+	},
+	keepTrailingSlash: true
+});
+```
+
+You can also use this feature when using the HttpiResource module. However, in order to remove the need
+to pass this setting through with every resource request, you can turn it on at the resource level:
+
+```js
+var resource = httpi
+	.resource( "api/friends/:id/" )
+	.setKeepTrailingSlash( true )
+;
+```
+
+Once this setting is enabled, all HTTP requests made from the given resource will allow the trailing
+slashes to remain in-tact, if they exist.
+
 
 [1]: http://www.bennadel.com
 [2]: https://plus.google.com/108976367067760160494?rel=author

@@ -114,6 +114,59 @@
 				// NOTE: This won't work - see console.warn() output.
 				promise.abort();
 
+
+				// ------------------------------------------ //
+				// ------------------------------------------ //
+
+
+				// By default, the URL interpolation of the httpi module (and resource)
+				// will strip off the trailing slash. However, some APIs require it to be
+				// there; as such, you can optionally tell the httpi and the HttpiResource
+				// to keep the trailing slash if it exists in the resultant URL.
+				var resource = httpi
+					.resource( "api/friends/( :listCommand | :id/:itemCommand )/" )
+					.setKeepTrailingSlash( true )
+				;
+
+				// Clear list of friends - matching listCommand.
+				var promise = resource.post({
+					data: {
+						listCommand: "reset"
+					}
+				});
+
+				// Create a new friend - no matching URL parameters.
+				var promise = resource.post({
+					data: {
+						name: "Tricia"
+					}
+				});
+
+				// Get a given friend - ID matching.
+				var promise = resource.get({
+					data: {
+						id: 4
+					}
+				});
+
+				// Make best friend - ID, itemCommand matching.
+				var promise = resource.post({
+					data: {
+						id: 4,
+						itemCommand: "make-best-friend"
+					}
+				});
+
+				// Get gets friends - no matching URL parameters.
+				// --
+				// NOTE: We are overriding the resource-level keepTrailingSlash setting.
+				var promise = resource.get({
+					params: {
+						limit: "besties"
+					},
+					keepTrailingSlash: false
+				});
+
 			}
 		);
 
